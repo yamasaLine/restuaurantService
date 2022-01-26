@@ -58,19 +58,43 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
                 <version>1.4</version>
+                <configuration>
+                    <revisionOnScmFailure>no.scm.config.in.pom</revisionOnScmFailure>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>create-timestamp-id</id>
                         <phase>validate</phase>
                         <goals>
-                            <goal>create</goal>
+                            <goal>create-timestamp</goal>
+                        </goals>
+                        <configuration>
+                            <timestampFormat>yyyy-MM-dd_HH-mm-ss</timestampFormat>
+                            <timestampPropertyName>buildNum</timestampPropertyName>
+                            <!-- formats the timestamp all together like 2016-04-04 14:17:05.123 and puts
+                                it in the ${myBuildNumberVariable} buildProperty -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.microservicelab1.kitchensvc.KitchenSvcApp</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <doCheck>true</doCheck>
-                    <doUpdate>true</doUpdate>
-                </configuration>
-            </plugin>            <plugin>
+                <!-- defined in spring-cloud-starter-parent pom (as documentation hint),
+                    but needs to be repeated here -->
+            </plugin>
+            <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.13</version>
@@ -85,17 +109,11 @@
                 </executions>
                 <configuration>
                     <repository>yamasa/micincu2</repository>
-                    <tag>${project.artifactId}.${buildNumber}</tag>
+                    <tag>${project.artifactId}.${buildNum}</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <!-- defined in spring-cloud-starter-parent pom (as documentation hint),
-                    but needs to be repeated here -->
             </plugin>
         </plugins>
     </build>

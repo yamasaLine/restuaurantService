@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class RestaurantSvcApp {
-    @Value("${cm-val:default}")
-    private String restVal;
+    private final String restVal = "received restaurant";
 
     public static void main(String[] args) {
         SpringApplication.run(RestaurantSvcApp.class, args);
