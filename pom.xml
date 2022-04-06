@@ -81,7 +81,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.microservicelab1.kitchensvc.KitchenSvcApp</mainClass>
+                    <mainClass>com.microservicelab1.restaurantsvc.RestaurantSvcApp</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
